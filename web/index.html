@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Speech Translator</title>
+  <meta name="description" content="Record a phrase and hear it spoken in English, Mandarin, Spanish, Japanese, French, Korean, or German.">
+  <meta name="theme-color" content="#f6f4ef">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Speech Translator home">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M4 16h3l2.5-7 4 14 3.5-10 3 6 2-3h6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <span>Speech Translator</span>
+      </a>
+      <div class="topbar-actions">
+        <a class="nav-link" href="/realtime.html">Live mode</a>
+        <button class="nav-link" id="settingsBtn" type="button" aria-haspopup="dialog" aria-controls="settingsDialog">Settings</button>
+        <div class="status-pill" id="statusPill" data-state="idle" role="status" aria-live="polite">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span id="statusText">Idle</span>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="intro" aria-labelledby="pageTitle">
+        <p class="eyebrow">Alibaba Cloud Model Studio · Token Plan</p>
+        <h1 id="pageTitle">Speak once.<br>Hear it in another language.</h1>
+        <p class="lede">Record a phrase, review the transcript, and play the translated voice. Seven target languages, one short flow.</p>
+      </section>
+
+      <section class="panel recorder" aria-labelledby="recordTitle">
+        <div class="panel-head">
+          <h2 id="recordTitle">Record your phrase</h2>
+          <label class="field" for="target">
+            <span>Translate into</span>
+            <select id="target">
+              <option value="en">English</option>
+              <option value="zh">Mandarin Chinese</option>
+              <option value="es" selected>Spanish</option>
+              <option value="ja">Japanese</option>
+              <option value="fr">French</option>
+              <option value="ko">Korean</option>
+              <option value="de">German</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="record-stage">
+          <div class="mic-wrap">
+            <button id="recordBtn" class="record-btn" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z" fill="currentColor"></path>
+                <path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+              </svg>
+              <span id="recordLabel">Start recording</span>
+            </button>
+            <button id="stopBtn" class="stop-btn" type="button" hidden>
+              <span class="stop-square" aria-hidden="true"></span>
+              Stop &amp; translate
+            </button>
+            <div class="timer" id="timer" aria-hidden="true">00:00</div>
+          </div>
+        </div>
+
+        <p class="hint" id="hint">Allow microphone access when your browser asks. Recording stops automatically at 2 minutes.</p>
+
+        <div class="error" id="error" role="alert" hidden>
+          <span id="errorText"></span>
+          <button id="retryBtn" class="ghost small" type="button" hidden>Try again</button>
+        </div>
+
+        <details class="pipeline" id="pipeline" hidden>
+          <summary>Pipeline log</summary>
+          <ol id="log"></ol>
+        </details>
+      </section>
+
+      <section class="result" id="result" hidden aria-labelledby="resultTitle">
+        <div class="result-head">
+          <h2 id="resultTitle">Result</h2>
+          <span class="result-lang" id="resultLang"></span>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <p class="card-label">Recognized speech</p>
+            <p class="card-body" id="sourceText"></p>
+          </article>
+          <article class="card">
+            <p class="card-label" id="translationLabel">Translation</p>
+            <p class="card-body" id="translationText"></p>
+          </article>
+        </div>
+
+        <audio id="player" controls preload="auto"></audio>
+
+        <div class="latency" aria-label="Measured latency">
+          <span class="latency-title">Latency</span>
+          <span class="chip"><span>ASR</span><strong id="latAsr">–</strong></span>
+          <span class="chip"><span>Translation</span><strong id="latTranslate">–</strong></span>
+          <span class="chip"><span>Speech</span><strong id="latTts">–</strong></span>
+          <span class="chip total"><span>Total</span><strong id="latTotal">–</strong></span>
+        </div>
+
+        <p class="meta" id="meta"></p>
+
+        <div class="actions">
+          <button id="againBtn" class="secondary" type="button">Translate again</button>
+          <button id="clearBtn" class="ghost" type="button">Clear</button>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      Audio is sent to Alibaba Cloud Model Studio for processing. This site does not store recordings.
+    </footer>
+  </div>
+
+  <script type="module" src="/app.js?v=20261111i"></script>
+</body>
+</html>

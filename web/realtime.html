@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Live Interpreter · Speech Translator</title>
+  <meta name="description" content="Speak continuously and hear the translation while you go.">
+  <meta name="theme-color" content="#f6f4ef">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Speech Translator home">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M4 16h3l2.5-7 4 14 3.5-10 3 6 2-3h6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <span>Speech Translator</span>
+      </a>
+      <div class="topbar-actions">
+        <a class="nav-link" href="/">One-shot mode</a>
+        <button class="nav-link" id="settingsBtn" type="button" aria-haspopup="dialog" aria-controls="settingsDialog">Settings</button>
+        <div class="status-pill" id="statusPill" data-state="idle" role="status" aria-live="polite">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span id="statusText">Idle</span>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="intro intro-live" aria-labelledby="pageTitle">
+        <p class="eyebrow">Qwen-Audio Realtime · Live interpretation</p>
+        <h1 id="pageTitle">Speak freely.<br>Hear it as you go.</h1>
+        <p class="lede">Your microphone streams continuously. The interpreter speaks each phrase as you finish it, keeping the full context of what you say. Headphones recommended.</p>
+      </section>
+
+      <section class="panel live-panel" aria-labelledby="liveTitle">
+        <div class="panel-head">
+          <h2 id="liveTitle">Live interpreter</h2>
+          <label class="field" for="target">
+            <span>Translate into</span>
+            <select id="target">
+              <option value="en">English</option>
+              <option value="zh">Mandarin Chinese</option>
+              <option value="es" selected>Spanish</option>
+              <option value="ja">Japanese</option>
+              <option value="fr">French</option>
+              <option value="ko">Korean</option>
+              <option value="de">German</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="live-controls">
+          <button id="liveBtn" class="record-btn live-btn" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z" fill="currentColor"></path>
+              <path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+            <span id="liveLabel">Start listening</span>
+          </button>
+          <div class="live-meters">
+            <div class="live-meter-row">
+              <span>Mic</span>
+              <div class="live-meter" role="meter" aria-label="Microphone level" aria-valuemin="0" aria-valuemax="100"><span id="meterFill"></span></div>
+            </div>
+            <div class="live-meter-row">
+              <span>Audio</span>
+              <div class="live-meter out" role="meter" aria-label="Translation audio level" aria-valuemin="0" aria-valuemax="100"><span id="outFill"></span></div>
+            </div>
+          </div>
+          <button id="testAudioBtn" class="ghost small" type="button">Test speaker</button>
+          <p class="hint" id="hint">Allow microphone access when asked. The interpreter speaks each phrase when you pause, so keep pauses short. Wear headphones so the translation is not picked up again.</p>
+        </div>
+
+        <div class="error" id="error" role="alert" hidden>
+          <span id="errorText"></span>
+          <button id="retryBtn" class="ghost small" type="button" hidden>Try again</button>
+        </div>
+
+        <div class="live-stage" aria-live="polite">
+          <p class="card-label">Translation</p>
+          <p class="live-caption" id="caption">Press Start, then speak.</p>
+          <p class="live-note">Live translation only — this model does not return a source transcript.</p>
+        </div>
+
+        <ol class="live-turns" id="turns" aria-label="Recent translations"></ol>
+      </section>
+    </main>
+
+    <footer>
+      Audio streams to Alibaba Cloud Model Studio while the interpreter is running. This site does not store recordings.
+    </footer>
+  </div>
+
+  <script type="module" src="/realtime.js?v=20261111j"></script>
+</body>
+</html>
